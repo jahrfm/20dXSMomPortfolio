@@ -82,8 +82,9 @@ def main():
 
     # --- 2. wallet balance ---
     try:
+        # wallet_balance() already returns the unwrapped {totalEquity, ...} dict
         bal = client.wallet_balance(account_type="UNIFIED")
-        total = bal.get("result", {}).get("list", [{}])[0].get("totalEquity", "?")
+        total = bal.get("totalEquity", "?")
         print(f"\n[2] wallet balance (UNIFIED): {total} USDT")
         if total in (None, "", "?"):
             ok = False
@@ -93,8 +94,8 @@ def main():
 
     # --- 3. open positions ---
     try:
-        pos = client.positions()
-        lst = pos.get("result", {}).get("list", [])
+        # positions() already returns the parsed list
+        lst = client.positions()
         print(f"[3] open positions: {len(lst)}")
         for p in lst:
             print(f"      {p.get('symbol')} {p.get('side')} size={p.get('size')}")
