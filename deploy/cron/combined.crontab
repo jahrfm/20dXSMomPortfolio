@@ -1,0 +1,20 @@
+# Combined strategy (CHAND4 + XSMOM) executor crontab — /etc/cron.d/20dxsmomportfolio
+# Canonical source: jahrfm/20dXSMomPortfolio deploy/cron/combined.crontab
+# Installed by deploy/update_vps.sh (repo = source of truth).
+#
+# Times: VPS local time. Assumed +07 (Vietnam ICT). Sydney AEST = +10.
+#   Sydney 11:00 = 08:00 +07  (daily signal generation on Hermes ~08:00 AEST,
+#                              so 11:00 Sydney lets the git-bus push land first)
+#   Sydney 19:00 = 16:00 +07  (afternoon trailing pass)
+#
+# Paper mode until COMBINED_AUTO_TRADE=true in /opt/bybit-execution/.env on the VPS.
+# Each job logs to /opt/20dxsmomportfolio/logs/.
+
+# --- self-update: pull repos + install crontab if changed (every 15 min) ---
+*/15 * * * * root /opt/20dxsmomportfolio/update_vps.sh >> /opt/20dxsmomportfolio/update.log 2>&1
+
+# --- daily signal execution (CHAND4 scan + XSMOM on rebalance days) ---
+0 8 * * * root cd /opt/20dxsmomportfolio && python3 scripts/run_combined_execution.py >> /opt/20dxsmomportfolio/logs/combined_execution.log 2>&1
+
+# --- afternoon trailing pass (keeps chandelier stops fresh) ---
+0 16 * * * root cd /opt/20dxsmomportfolio && python3 scripts/run_combined_execution.py >> /opt/20dxsmomportfolio/logs/combined_execution.log 2>&1
