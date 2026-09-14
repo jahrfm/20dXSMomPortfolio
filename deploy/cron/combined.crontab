@@ -7,7 +7,7 @@
 #                              so 11:00 Sydney lets the git-bus push land first)
 #   Sydney 19:00 = 16:00 +07  (afternoon trailing pass)
 #
-# Paper mode until COMBINED_AUTO_TRADE=true in /opt/bybit-execution/.env on the VPS.
+# Paper mode until COMBINED_AUTO_TRADE=true in ~/.hermes/.env on the VPS.
 # Each job logs to /opt/20dxsmomportfolio/logs/.
 
 # --- self-update: pull repos + install crontab if changed (every 15 min) ---

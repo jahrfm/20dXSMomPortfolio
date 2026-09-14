@@ -100,10 +100,9 @@ paper even without `--dry-run`.
 
 ## 5. Add the keys + go live
 
-1. On the VPS, edit `/opt/bybit-execution/.env` (same file the DMA engine uses;
-   `combined_exec.config` reads `~/.hermes/.env` → on root that is
-   `/root/.hermes/.env` — **match where the DMA engine reads it**; if the DMA
-   engine's `.env` is `/root/.hermes/.env`, put the combined keys there too):
+1. On the VPS, the combined executor reads **`~/.hermes/.env`** (as root:
+   `/root/.hermes/.env` — **the same file the DMA engine reads**, not a
+   per-repo `.env`). Add a block for the new sub-account:
 
 ```ini
 # NEW sub-account for the combined strategy
