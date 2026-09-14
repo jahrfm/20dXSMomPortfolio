@@ -80,15 +80,19 @@ if [ -f "$CRON_SRC" ]; then
     fi
 fi
 
-# --- 5. run the executor if today's signal is present (daily pass) ---
-TODAY=$(date -u +%F)
-SIG="$DATA_REPO/combined/combined_signals_${TODAY}.json"
-if [ -f "$SIG" ]; then
+# --- 5. run the executor if a signal is present (daily pass) ---
+# Signals are named by the LAST COMPLETED daily bar (e.g. the file pushed on
+# the 2026-09-14 morning run is combined_signals_2026-09-13.json, because the
+# current UTC day's bar is still forming). So pick the LATEST file, never a
+# today's-date exact match.
+SIG_DIR="$DATA_REPO/combined"
+SIG=$(ls -1 "$SIG_DIR"/combined_signals_*.json 2>/dev/null | sort | tail -1)
+if [ -n "$SIG" ] && [ -f "$SIG" ]; then
     cd "$CODE_DIR" && \
-        COMBINED_SIGNALS_DIR="$DATA_REPO/combined" \
-        python3 -m combined_exec.run --date "$TODAY" >> "$LOGS_DIR/combined_execution.log" 2>&1
+        COMBINED_SIGNALS_DIR="$SIG_DIR" \
+        python3 -m combined_exec.run --date "$(basename "$SIG" | sed 's/combined_signals_//; s/\.json$//')" >> "$LOGS_DIR/combined_execution.log" 2>&1
 else
-    log "no signal yet for $TODAY — skipping executor (update-only)"
+    log "no combined signal file found — skipping executor (update-only)"
 fi
 
 exit 0
