@@ -57,8 +57,9 @@ def main():
 
     # --- 1. key permissions (read-only signed endpoint) ---
     try:
-        res = client._signed_get("/v5/user/query-api-key", {})
-        data = res.get("result", {})
+        # Official Bybit V5 endpoint is /v5/user/query-api ("Get API Key Information").
+        # _signed_get already returns the `result` dict (client unwraps it).
+        data = client._signed_get("/v5/user/query-api", {})
         perms = data.get("permissions", {})
         contract = perms.get("ContractTrade", [])
         print("\n[1] API key permissions:")

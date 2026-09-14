@@ -61,17 +61,18 @@ def main():
     except Exception as e:
         print(f"  NOT VALID JSON: {e}")
 
-    print("\n=== 2. signed endpoint: /v5/user/query-api-key ===")
+    print("\n=== 2. signed endpoint: /v5/user/query-api ===")
     if not (cfg.get("api_key") and cfg.get("api_secret")):
         print("  (no COMBINED_API_KEY/SECRET set — nothing to sign with)")
         return 1
     # Replicate BybitClient._signed_get EXACTLY (same sign string + headers),
     # but print the raw body before any parsing so we see what the API sent.
+    # NOTE: official endpoint is /v5/user/query-api ("Get API Key Information").
     from bybit_exec.bybit_client import sign, BybitClient  # noqa: E402
     ts = int(time.time() * 1000)
-    qs = ""  # query-api-key takes no params; _signed_get joins {} -> ""
+    qs = ""  # query-api takes no params; _signed_get joins {} -> ""
     sig = sign(ts, cfg["api_key"], cfg.get("recv_window", 5000), qs, cfg["api_secret"])
-    url = f"{cfg['base_url']}/v5/user/query-api-key" + (f"?{qs}" if qs else "")
+    url = f"{cfg['base_url']}/v5/user/query-api" + (f"?{qs}" if qs else "")
     h = {
         "X-BAPI-API-KEY": cfg["api_key"],
         "X-BAPI-TIMESTAMP": str(ts),
@@ -80,7 +81,7 @@ def main():
         "User-Agent": "hermes-agent/bybit-exec",
     }
     status, body = raw_get(url, h)
-    print(f"  url    : {cfg['base_url']}/v5/user/query-api-key")
+    print(f"  url    : {cfg['base_url']}/v5/user/query-api")
     print(f"  status : {status}")
     print(f"  body   : {body[:600]}")
     try:
