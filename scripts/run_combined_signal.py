@@ -17,6 +17,7 @@ import subprocess
 import sys
 
 WORKSPACE = "/home/jose/workspace"
+COMBINED_REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENGINE_REPO = os.environ.get("HANDOFF_ENGINE_REPO",
                             "/home/jose/workspace/bybit-execution-engine")
 DATA_REPO = os.environ.get("HANDOFF_DATA_REPO",
@@ -33,8 +34,9 @@ def main():
                     help="generate only; do not push to the data repo")
     args = ap.parse_args()
 
-    # 1) generate the signal
-    sig_py = os.path.join(ENGINE_REPO, "combined_signal.py")
+    # 1) generate the signal (this repo's combined_signal.py — the same
+    #    strategy code the VPS executor and the backtest use)
+    sig_py = os.path.join(COMBINED_REPO, "combined_signal.py")
     if not os.path.exists(sig_py):
         print(f"[combined-signal] FATAL: {sig_py} not found", file=sys.stderr)
         return 1

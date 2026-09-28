@@ -81,95 +81,104 @@ tail -20 /opt/20dxsmomportfolio/update.log
 
 ---
 
-## 4. First run: paper / dry-run (no keys needed to inspect signals)
+## 4. First run: paper mode (default; no keys needed)
+
+Paper mode keeps a simulated account (`~/.combined_exec/paper_account.json`)
+on **real mainnet prices**: entries fill at the mark ± slippage with taker
+fees, stops are settled from daily bars and the live mark. This is the
+forward test. The hourly cron runs it automatically once installed.
 
 ```bash
-# list what signals the Hermes box pushed
-ls /opt/bybit-execution-data/combined/
-
-# dry-run against a specific signal — prints intended orders, posts nothing
 cd /opt/20dxsmomportfolio
-python3 -m combined_exec.run --dry-run --date 2026-09-13
+ls /opt/bybit-execution-data/combined/            # signals from Hermes
+python3 -m combined_exec.run --dry-plan           # what it would do now; touches nothing
+python3 scripts/run_combined_execution.py         # a real paper run (what cron does)
+python3 -m combined_exec.report                   # paper book + per-leg P&L
+tail -50 /opt/20dxsmomportfolio/logs/combined_execution.log
 ```
 
-Expected output: `[DRY] would place ...` lines for each candidate, `combined_exec
-run complete`. If `COMBINED_AUTO_TRADE` is false (default), the cron runs stay
-paper even without `--dry-run`.
+`COMBINED_TESTNET=false` is allowed in paper mode (it only selects the order
+endpoint, which paper never calls). Let it run for a few weeks and compare
+the paper trades with the backtest's behaviour before going live.
+
+**Hermes side:** the signal cron must run `scripts/run_combined_signal.py`
+from **this repo** (it now calls this repo's `combined_signal.py`, not a copy
+in bybit-execution-engine), after 00:00 UTC. Signal files are schema 2; the
+executor refuses older files.
 
 ---
 
-## 5. Add the keys + go live
+## 5. Go live
 
-1. On the VPS, the combined executor reads **`~/.hermes/.env`** (as root:
-   `/root/.hermes/.env` — **the same file the DMA engine reads**, not a
-   per-repo `.env`). Add a block for the new sub-account:
+1. Add the sub-account block to `/root/.hermes/.env`:
 
 ```ini
-# NEW sub-account for the combined strategy
 COMBINED_API_KEY=...
 COMBINED_API_SECRET=...
-COMBINED_TESTNET=false
-COMBINED_BASE_URL=https://api.bybit.com
+COMBINED_TESTNET=true          # smoke-test on testnet first
 COMBINED_AUTO_TRADE=true
-# optional sizing knobs (defaults are sensible; see README)
-# COMBINED_RISK_PCT=0.005
+# COMBINED_RISK_PCT=0.005      # 0.5% of equity per trade (backtest default)
+# COMBINED_XSMOM_ENABLED=false # backtest: no edge; leave off
 ```
 
-2. **Paper-review a few days first** (`COMBINED_AUTO_TRADE=false`, cron runs
-   paper, `report.py` shows the intended book). Only when the book looks right,
-   flip `COMBINED_AUTO_TRADE=true`.
-
-3. Restart/re-run:
-```bash
-cd /opt/20dxsmomportfolio && python3 -m combined_exec.report --days 7
-# and let the 15-min update + daily cron take over
-```
+2. `python3 scripts/verify_combined_api.py` → all checks pass.
+3. Testnet: let one signal execute; confirm positions, attached stops and
+   leverage in the Bybit testnet UI and `python3 -m combined_exec.report`.
+4. Mainnet: `COMBINED_TESTNET=false`, keep `COMBINED_AUTO_TRADE=true`.
+   The live state file is `state_live.json` — separate from paper.
 
 ---
 
 ## 6. Verification
 
-- **Signal side (Hermes):** `hypertracker-data/combined_signals_<date>.json`
-  exists and was pushed (check `git log --oneline -1` in bybit-execution-data).
-- **Data side (VPS):** `/opt/bybit-execution-data/combined/` has the dated file.
-- **Execution side (VPS):** `/opt/20dxsmomportfolio/logs/combined_execution.log`
-  shows `[ORDER]` (live) or `[DRY]` (paper) lines; `report.py` shows positions.
-- **Bybit app:** positions appear on the `combined` sub-account with orderLinkId
-  prefixes `CH4-` (CHAND4) and `XSM-` (XSMOM).
+- **Hermes:** `combined_signals_<yesterday UTC>.json` with `"schema": 2`
+  pushed to bybit-execution-data/combined/.
+- **VPS log:** one `=== combined_exec ...` block per hour; entries (`[OPEN]`)
+  only in the first run after a new signal; later runs say `manage-only`.
+- **Bybit:** each position has a stop-loss attached; CHAND4 stops move up
+  (longs) / down (shorts) as the chandelier trails.
+- **Report:** `python3 -m combined_exec.report` attributes P&L by leg from
+  the state file.
 
 ---
 
 ## 7. Safety rails (enforced in code)
 
-1. **Paper by default** — `COMBINED_AUTO_TRADE` unset/false → no orders posted.
-2. **Mainnet fail-closed** — mainnet (testnet=false) requires AUTO_TRADE=true +
-   keys; otherwise raises before any API call.
-3. **Risk-% sizing** — every trade risks `COMBINED_RISK_PCT` of balance; stop
-   derived leverage keeps liquidation at/beyond the stop.
-4. **Staleness guard** — entries >5% past live mark are skipped.
-5. **Never lower a chandelier stop** — trailing only ratchets up (longs) / down
-   (shorts).
-6. **Dedicated sub-account** — the combined book never touches the DMA TOP /
-   SCREENED wallets; no cross-contamination of risk or keys.
-7. **Idempotency marker** — `combined_done_<date>.ok` prevents duplicate daily
-   runs.
+1. **Paper by default**. Live needs `COMBINED_AUTO_TRADE=true` + keys.
+2. **Endpoint sanity**. `COMBINED_TESTNET` and `COMBINED_BASE_URL` must agree.
+3. **Fresh signals only**. Entries only from yesterday's completed UTC bar.
+4. **Once per signal**. State `last_signal_asof`, deterministic
+   orderLinkIds, and a run lock.
+5. **Risk-% sizing** with per-position notional cap, total margin cap,
+   per-leg/side caps, max positions, stop-derived leverage (set on Bybit
+   before every entry).
+6. **Stops live on the exchange** from the moment of entry (attached to the
+   market order), re-asserted every hour, trailed only in the safe direction.
+7. **Unmanaged positions are never touched**, but count against caps.
+8. **Legacy cleanup**: resting `CH4-`/`XSM-` orders from the v1 executor
+   are cancelled on the first live run.
 
 ---
 
 ## 8. Rollback / pause
 
-- Pause trading: set `COMBINED_AUTO_TRADE=false` (paper) or remove the
-  crontab drop-in `rm /etc/cron.d/20dxsmomportfolio` (update_vps.sh will
-  reinstall it on the next tick — also remove from the repo if permanent).
-- Emergency: cancel open orders / close positions via the Bybit app or
-  `report.py`-driven actions on the sub-account.
+- Stop new entries, keep managing: `COMBINED_AUTO_TRADE=false` is **not** a
+  pause for a live book (it switches to the paper account). To pause live
+  entries while keeping stops managed, set `COMBINED_MAX_POSITIONS=0`.
+- Full stop: remove the executor line from `deploy/cron/combined.crontab`
+  in the repo (update_vps.sh reinstalls whatever the repo has). Exchange
+  stops stay in place on open positions.
+- Emergency: close positions in the Bybit app; the next run records them as
+  `CLOSED-ON-EXCHANGE`.
 
 ## Troubleshooting
 
 | Symptom | Cause / fix |
 |---|---|
-| `FATAL: no combined signals at ...` | Hermes hasn't pushed a signal for that date; check the Hermes cron + data repo. |
-| `BybitAPIError: [None] None` on positions | No/incorrect keys in `.env` — add `COMBINED_API_KEY/SECRET` (or it's a transient blip, retry). |
-| `[10003] API key is invalid` | Testnet key against mainnet URL (or vice versa) — check `COMBINED_TESTNET` + `COMBINED_BASE_URL` match. |
-| No `CH4-`/`XSM-` positions but `[DRY]` lines | You're in paper mode — set `COMBINED_AUTO_TRADE=true`. |
-| `git@github.com-combined: ... Permission denied` | Deploy key not authorized on that repo, or alias not in `~/.ssh/config`. |
+| `no signal at .../combined_signals_<date>.json - manage-only` | Hermes hasn't pushed yesterday's signal yet (or failed). Check the Hermes cron; the next hourly run will pick it up. |
+| `not a schema-2 signal` | Hermes is running an old `combined_signal.py`. Point its cron at this repo's `scripts/run_combined_signal.py`. |
+| `COMBINED_TESTNET=... disagrees with COMBINED_BASE_URL` | Fix the pair in `.env` (or remove `COMBINED_BASE_URL`). |
+| `[UNMANAGED] SYM ...` | A position on the sub-account the executor didn't open. It's left alone; close it manually if unintended. |
+| `[SKIP] ... stale` | Price moved >5% from the signal close before the run; by design. |
+| `[10003] API key is invalid` | Testnet key against mainnet (or vice versa). |
+| `git@github.com-combined: ... Permission denied` | Deploy key not authorized, or alias missing from `~/.ssh/config`. |

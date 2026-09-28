@@ -38,16 +38,11 @@ from bybit_exec.bybit_client import BybitClient  # noqa: E402
 
 def main():
     cfg = combined_config()
-    print("mode        :", "MAINNET" if cfg["is_mainnet"] else
-          ("TESTNET" if cfg["testnet"] else "mainnet-url-without-testnet"))
+    print("mode        :", "MAINNET" if cfg["is_mainnet"] else "TESTNET")
     print("base_url    :", cfg["base_url"])
-    print("auto_trade  :", cfg["auto_trade"])
+    print("auto_trade  :", cfg["auto_trade"], "(false = paper: executor posts nothing)")
     print("api_key     :", (cfg["api_key"][:6] + "…" + cfg["api_key"][-4:]) if cfg["api_key"] else "(NOT SET)")
     print("api_secret  :", "SET" if cfg["api_secret"] else "(NOT SET)")
-    if cfg["is_mainnet"] and not (cfg["auto_trade"] and cfg["api_key"] and cfg["api_secret"]):
-        print("FAIL: mainnet requires COMBINED_AUTO_TRADE=true AND keys — config is intentionally "
-              "fail-closed, executor would refuse to run.")
-        return 1
     if not cfg["api_key"] or not cfg["api_secret"]:
         print("FAIL: COMBINED_API_KEY / COMBINED_API_SECRET not set in ~/.hermes/.env")
         return 1
