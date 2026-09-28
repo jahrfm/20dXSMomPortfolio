@@ -1,0 +1,738 @@
+{
+  "generated_at": "2026-09-28T19:06:39+00:00",
+  "data": {
+    "dir": "C:\\Users\\Jos\u00e9\\OneDrive\\Documents\\Repos\\MOMSXperp\\data_cache",
+    "symbols": 806,
+    "last_bar": "2026-09-27"
+  },
+  "assumptions": {
+    "fee_per_side": 0.00055,
+    "slippage_per_side": 0.0005,
+    "default_funding_8h": 0.0001,
+    "capital": 10000.0,
+    "params": {
+      "universe_size": 50,
+      "universe_turnover_window": 30,
+      "min_history": 110,
+      "atr_period": 14,
+      "chand4_lookback": 40,
+      "chand4_stop_window": 15,
+      "chandelier_mult": 4.0,
+      "chand4_top_n": 5,
+      "chand4_shorts": true,
+      "chand4_candidates_kept": 15,
+      "xsmom_enabled": true,
+      "xsmom_top_n": 5,
+      "xsmom_window": 30,
+      "xsmom_ma": 100,
+      "xsmom_stop_pct": 0.15,
+      "xsmom_rebalance_days": 14,
+      "xsmom_anchor": "2026-08-17",
+      "xsmom_weighting": "signal",
+      "risk_pct": 0.005,
+      "chand4_risk_pct": null,
+      "xsmom_risk_pct": null,
+      "max_positions": 15,
+      "cap_daily": 0.9,
+      "max_position_notional": 0.35,
+      "global_max_lev": 5,
+      "mmr": 0.005,
+      "liq_safety": 1.5,
+      "stale_pct": 5.0
+    }
+  },
+  "daily_return_correlation_chand4_vs_xsmom": 0.267,
+  "variants": {
+    "combined": {
+      "legs": [
+        "CHAND4",
+        "XSMOM"
+      ],
+      "overrides": {},
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 14417.45,
+        "total_return_pct": 44.2,
+        "cagr_pct": 8.3,
+        "sharpe": 0.46,
+        "sortino": 0.82,
+        "max_dd_pct": 51.7,
+        "max_dd_trough": "2025-10-02",
+        "calmar": 0.16,
+        "avg_gross_exposure": 0.181,
+        "avg_positions": 8.51,
+        "by_year_pct": {
+          "2022": -9.8,
+          "2023": 66.4,
+          "2024": -29.6,
+          "2025": 20.6,
+          "2026": 13.1
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 444,
+          "pnl": 5115.87,
+          "win_rate_pct": 38.3,
+          "profit_factor": 1.65,
+          "avg_r": 0.197,
+          "avg_hold_days": 27.3,
+          "best_r": 19.86,
+          "stops_pct": 96.6
+        },
+        "CHAND4 LONG": {
+          "trades": 282,
+          "pnl": 3731.25,
+          "win_rate_pct": 31.2,
+          "profit_factor": 1.67,
+          "avg_r": 0.212,
+          "avg_hold_days": 21.5,
+          "best_r": 19.86,
+          "stops_pct": 97.9
+        },
+        "CHAND4 SHORT": {
+          "trades": 162,
+          "pnl": 1384.62,
+          "win_rate_pct": 50.6,
+          "profit_factor": 1.6,
+          "avg_r": 0.173,
+          "avg_hold_days": 37.4,
+          "best_r": 4.53,
+          "stops_pct": 94.4
+        },
+        "XSMOM": {
+          "trades": 243,
+          "pnl": -703.05,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.94,
+          "avg_r": -0.176,
+          "avg_hold_days": 8.7,
+          "best_r": 25.7,
+          "stops_pct": 71.6
+        },
+        "XSMOM LONG": {
+          "trades": 243,
+          "pnl": -703.05,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.94,
+          "avg_r": -0.176,
+          "avg_hold_days": 8.7,
+          "best_r": 25.7,
+          "stops_pct": 71.6
+        }
+      },
+      "costs": {
+        "fees": 204.83,
+        "slippage": 186.21,
+        "funding": -5814.35
+      }
+    },
+    "chand4_only": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {},
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 14755.6,
+        "total_return_pct": 47.6,
+        "cagr_pct": 8.9,
+        "sharpe": 1.05,
+        "sortino": 1.6,
+        "max_dd_pct": 13.1,
+        "max_dd_trough": "2024-09-09",
+        "calmar": 0.68,
+        "avg_gross_exposure": 0.123,
+        "avg_positions": 7.34,
+        "by_year_pct": {
+          "2022": -2.4,
+          "2023": 32.0,
+          "2024": -4.4,
+          "2025": 3.6,
+          "2026": 15.6
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 465,
+          "pnl": 4752.58,
+          "win_rate_pct": 37.6,
+          "profit_factor": 1.54,
+          "avg_r": 0.176,
+          "avg_hold_days": 26.4,
+          "best_r": 19.86,
+          "stops_pct": 96.8
+        },
+        "CHAND4 LONG": {
+          "trades": 303,
+          "pnl": 3186.75,
+          "win_rate_pct": 30.7,
+          "profit_factor": 1.5,
+          "avg_r": 0.178,
+          "avg_hold_days": 20.5,
+          "best_r": 19.86,
+          "stops_pct": 98.0
+        },
+        "CHAND4 SHORT": {
+          "trades": 162,
+          "pnl": 1565.83,
+          "win_rate_pct": 50.6,
+          "profit_factor": 1.65,
+          "avg_r": 0.173,
+          "avg_hold_days": 37.4,
+          "best_r": 4.53,
+          "stops_pct": 94.4
+        }
+      },
+      "costs": {
+        "fees": 100.41,
+        "slippage": 91.28,
+        "funding": -1139.35
+      }
+    },
+    "xsmom_only": {
+      "legs": [
+        "XSMOM"
+      ],
+      "overrides": {},
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 10408.49,
+        "total_return_pct": 4.1,
+        "cagr_pct": 0.9,
+        "sharpe": 0.21,
+        "sortino": 0.32,
+        "max_dd_pct": 55.8,
+        "max_dd_trough": "2025-12-02",
+        "calmar": 0.02,
+        "avg_gross_exposure": 0.108,
+        "avg_positions": 2.16,
+        "by_year_pct": {
+          "2022": -9.7,
+          "2023": 40.9,
+          "2024": -30.1,
+          "2025": 14.1,
+          "2026": 2.6
+        }
+      },
+      "trades": {
+        "XSMOM": {
+          "trades": 367,
+          "pnl": 407.8,
+          "win_rate_pct": 25.9,
+          "profit_factor": 1.03,
+          "avg_r": -0.059,
+          "avg_hold_days": 9.8,
+          "best_r": 25.7,
+          "stops_pct": 69.2
+        },
+        "XSMOM LONG": {
+          "trades": 367,
+          "pnl": 407.8,
+          "win_rate_pct": 25.9,
+          "profit_factor": 1.03,
+          "avg_r": -0.059,
+          "avg_hold_days": 9.8,
+          "best_r": 25.7,
+          "stops_pct": 69.2
+        }
+      },
+      "costs": {
+        "fees": 157.96,
+        "slippage": 143.59,
+        "funding": -7399.25
+      }
+    },
+    "combined_long_only": {
+      "legs": [
+        "CHAND4",
+        "XSMOM"
+      ],
+      "overrides": {
+        "chand4_shorts": false
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 12344.79,
+        "total_return_pct": 23.4,
+        "cagr_pct": 4.7,
+        "sharpe": 0.31,
+        "sortino": 0.53,
+        "max_dd_pct": 55.5,
+        "max_dd_trough": "2025-11-28",
+        "calmar": 0.08,
+        "avg_gross_exposure": 0.134,
+        "avg_positions": 4.89,
+        "by_year_pct": {
+          "2022": -14.3,
+          "2023": 68.0,
+          "2024": -31.8,
+          "2025": 11.5,
+          "2026": 12.7
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 282,
+          "pnl": 3182.3,
+          "win_rate_pct": 31.2,
+          "profit_factor": 1.62,
+          "avg_r": 0.212,
+          "avg_hold_days": 21.5,
+          "best_r": 19.86,
+          "stops_pct": 97.9
+        },
+        "CHAND4 LONG": {
+          "trades": 282,
+          "pnl": 3182.3,
+          "win_rate_pct": 31.2,
+          "profit_factor": 1.62,
+          "avg_r": 0.212,
+          "avg_hold_days": 21.5,
+          "best_r": 19.86,
+          "stops_pct": 97.9
+        },
+        "XSMOM": {
+          "trades": 243,
+          "pnl": -841.43,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.93,
+          "avg_r": -0.176,
+          "avg_hold_days": 8.7,
+          "best_r": 25.7,
+          "stops_pct": 71.6
+        },
+        "XSMOM LONG": {
+          "trades": 243,
+          "pnl": -841.43,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.93,
+          "avg_r": -0.176,
+          "avg_hold_days": 8.7,
+          "best_r": 25.7,
+          "stops_pct": 71.6
+        }
+      },
+      "costs": {
+        "fees": 157.31,
+        "slippage": 143.0,
+        "funding": -5022.57
+      }
+    },
+    "combined_risk_1pct": {
+      "legs": [
+        "CHAND4",
+        "XSMOM"
+      ],
+      "overrides": {
+        "risk_pct": 0.01
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 16829.01,
+        "total_return_pct": 68.3,
+        "cagr_pct": 12.0,
+        "sharpe": 0.47,
+        "sortino": 0.83,
+        "max_dd_pct": 74.2,
+        "max_dd_trough": "2025-10-02",
+        "calmar": 0.16,
+        "avg_gross_exposure": 0.354,
+        "avg_positions": 8.51,
+        "by_year_pct": {
+          "2022": -18.7,
+          "2023": 146.8,
+          "2024": -49.2,
+          "2025": 33.2,
+          "2026": 23.9
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 444,
+          "pnl": 10604.34,
+          "win_rate_pct": 38.3,
+          "profit_factor": 1.66,
+          "avg_r": 0.197,
+          "avg_hold_days": 27.3,
+          "best_r": 19.86,
+          "stops_pct": 96.6
+        },
+        "CHAND4 LONG": {
+          "trades": 282,
+          "pnl": 8055.93,
+          "win_rate_pct": 31.2,
+          "profit_factor": 1.72,
+          "avg_r": 0.212,
+          "avg_hold_days": 21.5,
+          "best_r": 19.86,
+          "stops_pct": 97.9
+        },
+        "CHAND4 SHORT": {
+          "trades": 162,
+          "pnl": 2548.4,
+          "win_rate_pct": 50.6,
+          "profit_factor": 1.53,
+          "avg_r": 0.173,
+          "avg_hold_days": 37.4,
+          "best_r": 4.53,
+          "stops_pct": 94.4
+        },
+        "XSMOM": {
+          "trades": 243,
+          "pnl": -3785.57,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.85,
+          "avg_r": -0.176,
+          "avg_hold_days": 8.7,
+          "best_r": 25.7,
+          "stops_pct": 71.6
+        },
+        "XSMOM LONG": {
+          "trades": 243,
+          "pnl": -3785.57,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.85,
+          "avg_r": -0.176,
+          "avg_hold_days": 8.7,
+          "best_r": 25.7,
+          "stops_pct": 71.6
+        }
+      },
+      "costs": {
+        "fees": 417.96,
+        "slippage": 379.97,
+        "funding": -10536.8
+      }
+    },
+    "chand4_only_risk_1pct": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {
+        "risk_pct": 0.01
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 20992.64,
+        "total_return_pct": 109.9,
+        "cagr_pct": 17.6,
+        "sharpe": 1.09,
+        "sortino": 1.69,
+        "max_dd_pct": 22.2,
+        "max_dd_trough": "2024-09-09",
+        "calmar": 0.79,
+        "avg_gross_exposure": 0.243,
+        "avg_positions": 7.34,
+        "by_year_pct": {
+          "2022": -4.9,
+          "2023": 67.6,
+          "2024": -7.7,
+          "2025": 7.3,
+          "2026": 32.9
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 465,
+          "pnl": 10984.44,
+          "win_rate_pct": 37.6,
+          "profit_factor": 1.54,
+          "avg_r": 0.176,
+          "avg_hold_days": 26.4,
+          "best_r": 19.86,
+          "stops_pct": 96.8
+        },
+        "CHAND4 LONG": {
+          "trades": 303,
+          "pnl": 7527.2,
+          "win_rate_pct": 30.7,
+          "profit_factor": 1.51,
+          "avg_r": 0.178,
+          "avg_hold_days": 20.5,
+          "best_r": 19.86,
+          "stops_pct": 98.0
+        },
+        "CHAND4 SHORT": {
+          "trades": 162,
+          "pnl": 3457.24,
+          "win_rate_pct": 50.6,
+          "profit_factor": 1.64,
+          "avg_r": 0.173,
+          "avg_hold_days": 37.4,
+          "best_r": 4.53,
+          "stops_pct": 94.4
+        }
+      },
+      "costs": {
+        "fees": 228.69,
+        "slippage": 207.9,
+        "funding": -2706.25
+      }
+    },
+    "chand4_only_no_funding": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {},
+      "funding": false,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 13420.97,
+        "total_return_pct": 34.2,
+        "cagr_pct": 6.6,
+        "sharpe": 0.81,
+        "sortino": 1.22,
+        "max_dd_pct": 12.7,
+        "max_dd_trough": "2024-09-09",
+        "calmar": 0.52,
+        "avg_gross_exposure": 0.124,
+        "avg_positions": 7.34,
+        "by_year_pct": {
+          "2022": -2.1,
+          "2023": 28.1,
+          "2024": -4.3,
+          "2025": 0.6,
+          "2026": 11.2
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 465,
+          "pnl": 3418.22,
+          "win_rate_pct": 36.3,
+          "profit_factor": 1.38,
+          "avg_r": 0.135,
+          "avg_hold_days": 26.4,
+          "best_r": 21.39,
+          "stops_pct": 96.8
+        },
+        "CHAND4 LONG": {
+          "trades": 303,
+          "pnl": 1934.3,
+          "win_rate_pct": 29.0,
+          "profit_factor": 1.29,
+          "avg_r": 0.119,
+          "avg_hold_days": 20.5,
+          "best_r": 21.39,
+          "stops_pct": 98.0
+        },
+        "CHAND4 SHORT": {
+          "trades": 162,
+          "pnl": 1483.93,
+          "win_rate_pct": 50.0,
+          "profit_factor": 1.63,
+          "avg_r": 0.167,
+          "avg_hold_days": 37.4,
+          "best_r": 4.8,
+          "stops_pct": 94.4
+        }
+      },
+      "costs": {
+        "fees": 97.29,
+        "slippage": 88.45,
+        "funding": 0.0
+      }
+    },
+    "xsmom_only_no_funding": {
+      "legs": [
+        "XSMOM"
+      ],
+      "overrides": {},
+      "funding": false,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 4883.57,
+        "total_return_pct": -51.2,
+        "cagr_pct": -14.5,
+        "sharpe": -0.24,
+        "sortino": -0.35,
+        "max_dd_pct": 67.1,
+        "max_dd_trough": "2026-09-14",
+        "calmar": -0.22,
+        "avg_gross_exposure": 0.109,
+        "avg_positions": 2.16,
+        "by_year_pct": {
+          "2022": -10.9,
+          "2023": 27.6,
+          "2024": -33.4,
+          "2025": -9.4,
+          "2026": -28.8
+        }
+      },
+      "trades": {
+        "XSMOM": {
+          "trades": 367,
+          "pnl": -5116.76,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.64,
+          "avg_r": -0.265,
+          "avg_hold_days": 9.8,
+          "best_r": 10.61,
+          "stops_pct": 69.2
+        },
+        "XSMOM LONG": {
+          "trades": 367,
+          "pnl": -5116.76,
+          "win_rate_pct": 22.6,
+          "profit_factor": 0.64,
+          "avg_r": -0.265,
+          "avg_hold_days": 9.8,
+          "best_r": 10.61,
+          "stops_pct": 69.2
+        }
+      },
+      "costs": {
+        "fees": 132.02,
+        "slippage": 120.01,
+        "funding": 0.0
+      }
+    },
+    "xsmom_only_equal_weight": {
+      "legs": [
+        "XSMOM"
+      ],
+      "overrides": {
+        "xsmom_weighting": "equal"
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 8337.97,
+        "total_return_pct": -16.6,
+        "cagr_pct": -3.9,
+        "sharpe": -0.06,
+        "sortino": -0.1,
+        "max_dd_pct": 38.3,
+        "max_dd_trough": "2025-12-02",
+        "calmar": -0.1,
+        "avg_gross_exposure": 0.107,
+        "avg_positions": 2.69,
+        "by_year_pct": {
+          "2022": -12.5,
+          "2023": 19.6,
+          "2024": -19.2,
+          "2025": -3.6,
+          "2026": 2.3
+        }
+      },
+      "trades": {
+        "XSMOM": {
+          "trades": 442,
+          "pnl": -1663.38,
+          "win_rate_pct": 26.9,
+          "profit_factor": 0.87,
+          "avg_r": -0.061,
+          "avg_hold_days": 10.2,
+          "best_r": 25.7,
+          "stops_pct": 67.4
+        },
+        "XSMOM LONG": {
+          "trades": 442,
+          "pnl": -1663.38,
+          "win_rate_pct": 26.9,
+          "profit_factor": 0.87,
+          "avg_r": -0.061,
+          "avg_hold_days": 10.2,
+          "best_r": 25.7,
+          "stops_pct": 67.4
+        }
+      },
+      "costs": {
+        "fees": 140.2,
+        "slippage": 127.46,
+        "funding": -3239.94
+      }
+    },
+    "xsmom_only_research_universe": {
+      "legs": [
+        "XSMOM"
+      ],
+      "overrides": {},
+      "funding": true,
+      "universe": "today's top-50 fixed (lookahead)",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 9673.09,
+        "total_return_pct": -3.3,
+        "cagr_pct": -0.7,
+        "sharpe": 0.05,
+        "sortino": 0.07,
+        "max_dd_pct": 32.8,
+        "max_dd_trough": "2026-09-14",
+        "calmar": -0.02,
+        "avg_gross_exposure": 0.108,
+        "avg_positions": 2.23,
+        "by_year_pct": {
+          "2022": -9.0,
+          "2023": 18.3,
+          "2024": -4.0,
+          "2025": 11.0,
+          "2026": -15.7
+        }
+      },
+      "trades": {
+        "XSMOM": {
+          "trades": 231,
+          "pnl": -327.53,
+          "win_rate_pct": 29.4,
+          "profit_factor": 0.97,
+          "avg_r": 0.211,
+          "avg_hold_days": 16.1,
+          "best_r": 42.06,
+          "stops_pct": 55.8
+        },
+        "XSMOM LONG": {
+          "trades": 231,
+          "pnl": -327.53,
+          "win_rate_pct": 29.4,
+          "profit_factor": 0.97,
+          "avg_r": 0.211,
+          "avg_hold_days": 16.1,
+          "best_r": 42.06,
+          "stops_pct": 55.8
+        }
+      },
+      "costs": {
+        "fees": 109.8,
+        "slippage": 99.82,
+        "funding": 43.82
+      }
+    }
+  }
+}
