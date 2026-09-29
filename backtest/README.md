@@ -67,6 +67,21 @@ At 1% risk: chandelier 40/15 17.6% CAGR / 22.2% DD, channel 20/10
 13.7% / 22.6%. That sits between 20d's audited 43-coin (hindsight-selected)
 and 16-coin figures, as expected once hindsight is removed.
 
+**Equal-risk comparison and stability** (CHAND4 leg only; H1/H2 = first and
+second half of the period):
+
+| Spec | Risk | CAGR | Sharpe | Sortino | Max DD | Calmar | H1 Sharpe | H2 Sharpe |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **Chandelier 40/15** | 1% | 17.6% | **1.09** | **1.69** | 22.2% | 0.79 | 0.86 | **1.42** |
+| Channel 40/15 | 1% | 17.6% | 0.77 | 1.39 | 20.7% | 0.85 | 0.84 | 0.76 |
+| Channel 20/10 | 1% | 13.7% | 0.71 | 1.10 | 22.6% | 0.61 | 0.73 | 0.68 |
+
+**Selected for live: chandelier 40/15** (`chand4_exit="chandelier"`, the
+default). Same return as channel 40/15 at equal risk with a clearly higher
+Sharpe and Sortino, and it is never worse in either half. Channel 40/15 has a
+slightly shallower drawdown. Shorts stay on (long-only lowers Sharpe in every
+spec) and XSMOM stays off.
+
 Reading: all three specs are profitable with similar CAGR, and all make
 their money in 2023 and 2026 (2024–25 flat). The chandelier has the best
 risk-adjusted numbers here, but the gap is small and every spec was chosen
