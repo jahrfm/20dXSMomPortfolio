@@ -18,8 +18,8 @@ checked in).
 
 | | |
 |---|---|
-| Data | Every Bybit USDT perp ever listed (806 with ≥30 bars, **delisted included**), daily klines + actual funding history, 2020-03 → 2026-09-27 |
-| Universe | Point-in-time: top-50 by trailing 30-day turnover, ≥110 bars of history, stablecoins excluded |
+| Data | Every Bybit crypto USDT perp ever listed (805 with ≥30 bars, **delisted included**), daily klines + actual funding history, 2020-03 → 2026-09-27 |
+| Universe | Point-in-time: top-50 by trailing 30-day turnover, ≥110 bars of history; crypto only (stock/ETF/commodity/forex perps, stablecoins and tokenised gold excluded — same rule as MOMSXperp) |
 | Timing | Signal on the completed bar D-1; fills at D's open; stops checked on D's bar **including the entry day**; gap-through stops fill at the open |
 | Costs | 5.5 bps taker + 5 bps slippage per side; funding charged/received daily from real 8h/4h/1h rates (0.01%/8h assumed where history is missing) |
 | Sizing | 0.5% of equity risked per trade to the stop; max 35% notional per position; margin ≤ 90% of equity at stop-derived leverage (max 5x) |

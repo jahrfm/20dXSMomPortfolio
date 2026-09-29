@@ -9,7 +9,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from .strategy import Series, is_stable
+from .strategy import Series, is_crypto_instrument
 
 
 class MarketError(Exception):
@@ -76,6 +76,8 @@ class Market:
                     out[it["symbol"]] = {
                         "status": it.get("status"),
                         "contractType": it.get("contractType"),
+                        "symbolType": it.get("symbolType", ""),
+                        "baseCoin": it.get("baseCoin", ""),
                         "qtyStep": float(lot.get("qtyStep") or 1),
                         "minQty": float(lot.get("minOrderQty") or 0),
                         "maxQty": float(lot.get("maxMktOrderQty") or lot.get("maxOrderQty") or 0),
@@ -90,9 +92,12 @@ class Market:
         return self._instruments
 
     def tradable_usdt_perps(self):
+        """Trading USDT linear perps that are crypto (no stock/ETF/commodity/
+        forex perps, stablecoins or tokenised gold) — the backtest universe."""
         return [s for s, i in self.instruments().items()
                 if s.endswith("USDT") and i["status"] == "Trading"
-                and i.get("contractType") in (None, "LinearPerpetual") and not is_stable(s)]
+                and i.get("contractType") in (None, "LinearPerpetual")
+                and is_crypto_instrument(i.get("symbolType"), i.get("baseCoin"))]
 
     def klines(self, symbol, limit=300):
         rows = self._get("/v5/market/kline", {"category": "linear", "symbol": symbol,

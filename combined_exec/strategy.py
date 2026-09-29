@@ -83,11 +83,23 @@ STABLE_BASES = {
     "USDC", "USDE", "FDUSD", "DAI", "TUSD", "BUSD", "USD1", "USDD", "PYUSD",
     "USDP", "UST", "USTC", "EURC", "EUR", "RLUSD", "USDQ", "USDR", "SUSD",
 }
+# Tokenised gold trades like a commodity, not a crypto trend.
+EXCLUDED_BASES = STABLE_BASES | {"XAUT", "PAXG"}
+# Bybit instrument symbolType: "" and "innovation" are crypto; "stock",
+# "ETF", "commodity", "forex" are TradFi perps (weekend gaps, different
+# behaviour) and were never in the backtest universe. Same rule as MOMSXperp.
+CRYPTO_SYMBOL_TYPES = {"", "innovation"}
 
 
 def is_stable(symbol):
     base = symbol[:-4] if symbol.endswith("USDT") else symbol
-    return base in STABLE_BASES
+    return base in EXCLUDED_BASES
+
+
+def is_crypto_instrument(symbol_type, base_coin):
+    """True for crypto perps; False for stock/ETF/commodity/forex perps,
+    stablecoins and tokenised gold."""
+    return (symbol_type or "") in CRYPTO_SYMBOL_TYPES and base_coin not in EXCLUDED_BASES
 
 
 def day_str(d):

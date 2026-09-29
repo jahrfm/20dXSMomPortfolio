@@ -63,6 +63,26 @@ class TestUniverse(unittest.TestCase):
         self.assertEqual(st.universe(m, day(19), p), ["BUSDT", "AUSDT"])
 
 
+class TestCryptoOnly(unittest.TestCase):
+    def test_tradfi_and_gold_excluded(self):
+        self.assertTrue(st.is_crypto_instrument("", "BTC"))
+        self.assertTrue(st.is_crypto_instrument("innovation", "PIPPIN"))
+        for typ, base in (("stock", "AAPL"), ("ETF", "SOXL"), ("commodity", "XAU"),
+                          ("forex", "EUR"), ("", "XAUT"), ("", "PAXG"), ("", "USDC")):
+            self.assertFalse(st.is_crypto_instrument(typ, base), (typ, base))
+
+    def test_market_filter(self):
+        from combined_exec.market import Market
+        m = Market()
+        m._instruments = {
+            "BTCUSDT": {"status": "Trading", "contractType": "LinearPerpetual", "symbolType": "", "baseCoin": "BTC"},
+            "AAPLUSDT": {"status": "Trading", "contractType": "LinearPerpetual", "symbolType": "stock", "baseCoin": "AAPL"},
+            "XAUTUSDT": {"status": "Trading", "contractType": "LinearPerpetual", "symbolType": "", "baseCoin": "XAUT"},
+            "OLDUSDT": {"status": "Closed", "contractType": "LinearPerpetual", "symbolType": "", "baseCoin": "OLD"},
+        }
+        self.assertEqual(m.tradable_usdt_perps(), ["BTCUSDT"])
+
+
 class TestChand4(unittest.TestCase):
     def setUp(self):
         closes = [100.0] * 60 + [110.0]

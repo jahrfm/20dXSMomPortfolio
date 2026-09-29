@@ -39,7 +39,7 @@ from datetime import date, datetime, timedelta, timezone
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO)
 
-from combined_exec.strategy import DEFAULTS, Series, build_signal, universe  # noqa: E402
+from combined_exec.strategy import DEFAULTS, Series, build_signal, is_crypto_instrument, universe  # noqa: E402
 from combined_exec.planner import plan_day, trail_updates  # noqa: E402
 
 FEE = 0.00055          # Bybit taker, per side
@@ -58,11 +58,19 @@ def load_data(data_dir, cutoff=None):
         if fetched:
             cutoff = fetched[:10]          # bars on the fetch day may be forming
     series, funding = {}, {}
+    non_crypto = set()
+    ipath = os.path.join(data_dir, "instruments.json")
+    if os.path.exists(ipath):
+        with open(ipath) as f:
+            non_crypto = {i["symbol"] for i in json.load(f)
+                          if not is_crypto_instrument(i.get("symbolType", ""), i.get("baseCoin", ""))}
     kdir = os.path.join(data_dir, "klines")
     for name in sorted(os.listdir(kdir)):
         if not name.endswith("USDT.json"):
             continue
         sym = name[:-5]
+        if sym in non_crypto:
+            continue
         with open(os.path.join(kdir, name)) as f:
             rows = json.load(f)
         s = Series.from_bybit(sym, rows, before=cutoff)
