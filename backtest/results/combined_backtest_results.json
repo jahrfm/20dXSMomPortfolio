@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-28T19:06:39+00:00",
+  "generated_at": "2026-09-28T19:29:30+00:00",
   "data": {
     "dir": "C:\\Users\\Jos\u00e9\\OneDrive\\Documents\\Repos\\MOMSXperp\\data_cache",
     "symbols": 806,
@@ -18,6 +18,7 @@
       "chand4_lookback": 40,
       "chand4_stop_window": 15,
       "chandelier_mult": 4.0,
+      "chand4_exit": "chandelier",
       "chand4_top_n": 5,
       "chand4_shorts": true,
       "chand4_candidates_kept": 15,
@@ -732,6 +733,339 @@
         "fees": 109.8,
         "slippage": 99.82,
         "funding": 43.82
+      }
+    },
+    "breakout_20_10_channel": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {
+        "chand4_lookback": 20,
+        "chand4_stop_window": 10,
+        "chand4_exit": "channel"
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 13654.68,
+        "total_return_pct": 36.5,
+        "cagr_pct": 7.0,
+        "sharpe": 0.67,
+        "sortino": 1.03,
+        "max_dd_pct": 12.0,
+        "max_dd_trough": "2025-07-09",
+        "calmar": 0.59,
+        "avg_gross_exposure": 0.141,
+        "avg_positions": 5.87,
+        "by_year_pct": {
+          "2022": 1.5,
+          "2023": 25.4,
+          "2024": -4.6,
+          "2025": -2.1,
+          "2026": 14.8
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 1528,
+          "pnl": 3652.8,
+          "win_rate_pct": 18.0,
+          "profit_factor": 1.24,
+          "avg_r": 0.044,
+          "avg_hold_days": 6.4,
+          "best_r": 23.48,
+          "stops_pct": 99.1
+        },
+        "CHAND4 LONG": {
+          "trades": 875,
+          "pnl": 2253.1,
+          "win_rate_pct": 16.1,
+          "profit_factor": 1.22,
+          "avg_r": 0.04,
+          "avg_hold_days": 5.7,
+          "best_r": 23.48,
+          "stops_pct": 99.3
+        },
+        "CHAND4 SHORT": {
+          "trades": 653,
+          "pnl": 1399.7,
+          "win_rate_pct": 20.5,
+          "profit_factor": 1.27,
+          "avg_r": 0.049,
+          "avg_hold_days": 7.4,
+          "best_r": 14.06,
+          "stops_pct": 98.9
+        }
+      },
+      "costs": {
+        "fees": 442.0,
+        "slippage": 401.82,
+        "funding": -1675.7
+      }
+    },
+    "breakout_20_10_channel_risk_1pct": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {
+        "chand4_lookback": 20,
+        "chand4_stop_window": 10,
+        "chand4_exit": "channel",
+        "risk_pct": 0.01
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 18038.73,
+        "total_return_pct": 80.4,
+        "cagr_pct": 13.7,
+        "sharpe": 0.71,
+        "sortino": 1.1,
+        "max_dd_pct": 22.6,
+        "max_dd_trough": "2026-01-27",
+        "calmar": 0.61,
+        "avg_gross_exposure": 0.276,
+        "avg_positions": 5.87,
+        "by_year_pct": {
+          "2022": 2.0,
+          "2023": 55.4,
+          "2024": -9.7,
+          "2025": -4.6,
+          "2026": 32.1
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 1528,
+          "pnl": 8033.89,
+          "win_rate_pct": 18.0,
+          "profit_factor": 1.23,
+          "avg_r": 0.044,
+          "avg_hold_days": 6.4,
+          "best_r": 23.48,
+          "stops_pct": 99.1
+        },
+        "CHAND4 LONG": {
+          "trades": 875,
+          "pnl": 5593.28,
+          "win_rate_pct": 16.1,
+          "profit_factor": 1.25,
+          "avg_r": 0.04,
+          "avg_hold_days": 5.7,
+          "best_r": 23.48,
+          "stops_pct": 99.3
+        },
+        "CHAND4 SHORT": {
+          "trades": 653,
+          "pnl": 2440.61,
+          "win_rate_pct": 20.5,
+          "profit_factor": 1.21,
+          "avg_r": 0.049,
+          "avg_hold_days": 7.4,
+          "best_r": 14.06,
+          "stops_pct": 98.9
+        }
+      },
+      "costs": {
+        "fees": 975.97,
+        "slippage": 887.25,
+        "funding": -3726.31
+      }
+    },
+    "breakout_20_10_channel_long_only": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {
+        "chand4_lookback": 20,
+        "chand4_stop_window": 10,
+        "chand4_exit": "channel",
+        "chand4_shorts": false
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 11688.05,
+        "total_return_pct": 16.9,
+        "cagr_pct": 3.5,
+        "sharpe": 0.37,
+        "sortino": 0.56,
+        "max_dd_pct": 15.1,
+        "max_dd_trough": "2023-01-01",
+        "calmar": 0.23,
+        "avg_gross_exposure": 0.087,
+        "avg_positions": 2.99,
+        "by_year_pct": {
+          "2022": -15.0,
+          "2023": 25.4,
+          "2024": -1.3,
+          "2025": -2.3,
+          "2026": 13.6
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 875,
+          "pnl": 1686.51,
+          "win_rate_pct": 16.1,
+          "profit_factor": 1.19,
+          "avg_r": 0.04,
+          "avg_hold_days": 5.7,
+          "best_r": 23.48,
+          "stops_pct": 99.3
+        },
+        "CHAND4 LONG": {
+          "trades": 875,
+          "pnl": 1686.51,
+          "win_rate_pct": 16.1,
+          "profit_factor": 1.19,
+          "avg_r": 0.04,
+          "avg_hold_days": 5.7,
+          "best_r": 23.48,
+          "stops_pct": 99.3
+        }
+      },
+      "costs": {
+        "fees": 217.24,
+        "slippage": 197.49,
+        "funding": -1563.51
+      }
+    },
+    "breakout_40_15_channel": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {
+        "chand4_exit": "channel"
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 15009.03,
+        "total_return_pct": 50.1,
+        "cagr_pct": 9.3,
+        "sharpe": 0.73,
+        "sortino": 1.31,
+        "max_dd_pct": 11.9,
+        "max_dd_trough": "2026-09-27",
+        "calmar": 0.78,
+        "avg_gross_exposure": 0.105,
+        "avg_positions": 5.05,
+        "by_year_pct": {
+          "2022": -4.0,
+          "2023": 31.5,
+          "2024": -1.8,
+          "2025": -1.1,
+          "2026": 22.5
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 1151,
+          "pnl": 5004.75,
+          "win_rate_pct": 15.3,
+          "profit_factor": 1.53,
+          "avg_r": 0.078,
+          "avg_hold_days": 7.3,
+          "best_r": 40.32,
+          "stops_pct": 98.8
+        },
+        "CHAND4 LONG": {
+          "trades": 663,
+          "pnl": 4465.7,
+          "win_rate_pct": 14.5,
+          "profit_factor": 1.68,
+          "avg_r": 0.117,
+          "avg_hold_days": 6.6,
+          "best_r": 40.32,
+          "stops_pct": 99.1
+        },
+        "CHAND4 SHORT": {
+          "trades": 488,
+          "pnl": 539.05,
+          "win_rate_pct": 16.4,
+          "profit_factor": 1.19,
+          "avg_r": 0.025,
+          "avg_hold_days": 8.3,
+          "best_r": 4.53,
+          "stops_pct": 98.4
+        }
+      },
+      "costs": {
+        "fees": 252.43,
+        "slippage": 229.48,
+        "funding": -1876.02
+      }
+    },
+    "chand4_only_long_only": {
+      "legs": [
+        "CHAND4"
+      ],
+      "overrides": {
+        "chand4_shorts": false
+      },
+      "funding": true,
+      "universe": "point-in-time",
+      "stats": {
+        "start": "2022-02-27",
+        "end": "2026-09-27",
+        "years": 4.59,
+        "final_equity": 12778.22,
+        "total_return_pct": 27.8,
+        "cagr_pct": 5.5,
+        "sharpe": 0.65,
+        "sortino": 0.98,
+        "max_dd_pct": 18.5,
+        "max_dd_trough": "2026-03-08",
+        "calmar": 0.3,
+        "avg_gross_exposure": 0.076,
+        "avg_positions": 3.72,
+        "by_year_pct": {
+          "2022": -7.0,
+          "2023": 33.6,
+          "2024": -7.2,
+          "2025": -4.0,
+          "2026": 15.5
+        }
+      },
+      "trades": {
+        "CHAND4": {
+          "trades": 303,
+          "pnl": 2775.64,
+          "win_rate_pct": 30.7,
+          "profit_factor": 1.46,
+          "avg_r": 0.178,
+          "avg_hold_days": 20.5,
+          "best_r": 19.86,
+          "stops_pct": 98.0
+        },
+        "CHAND4 LONG": {
+          "trades": 303,
+          "pnl": 2775.64,
+          "win_rate_pct": 30.7,
+          "profit_factor": 1.46,
+          "avg_r": 0.178,
+          "avg_hold_days": 20.5,
+          "best_r": 19.86,
+          "stops_pct": 98.0
+        }
+      },
+      "costs": {
+        "fees": 59.62,
+        "slippage": 54.2,
+        "funding": -948.65
       }
     }
   }

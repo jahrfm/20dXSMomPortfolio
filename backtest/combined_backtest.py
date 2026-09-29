@@ -351,6 +351,8 @@ def main():
             sig_cache[key] = precompute_signals(series, universes, pv, fixed)
         return sig_cache[key]
 
+    B2010 = {"chand4_lookback": 20, "chand4_stop_window": 10, "chand4_exit": "channel"}
+    B4015 = {"chand4_exit": "channel"}
     # name, legs, param overrides, signal key, fixed universe, funding
     variants = [
         ("combined", ("CHAND4", "XSMOM"), {}, "base", None, True),
@@ -363,6 +365,12 @@ def main():
         ("xsmom_only_no_funding", ("XSMOM",), {}, "base", None, False),
         ("xsmom_only_equal_weight", ("XSMOM",), {"xsmom_weighting": "equal"}, "equal", None, True),
         ("xsmom_only_research_universe", ("XSMOM",), {}, "fixed", today_top, True),
+        # plain channel breakouts (the 20d audit found these match or beat the chandelier)
+        ("breakout_20_10_channel", ("CHAND4",), B2010, "b2010", None, True),
+        ("breakout_20_10_channel_risk_1pct", ("CHAND4",), dict(B2010, risk_pct=0.01), "b2010", None, True),
+        ("breakout_20_10_channel_long_only", ("CHAND4",), dict(B2010, chand4_shorts=False), "b2010", None, True),
+        ("breakout_40_15_channel", ("CHAND4",), B4015, "base", None, True),
+        ("chand4_only_long_only", ("CHAND4",), {"chand4_shorts": False}, "base", None, True),
     ]
     runs, meta = {}, {}
     for name, legs, over, key, fixed, fund in variants:

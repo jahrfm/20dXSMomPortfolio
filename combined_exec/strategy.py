@@ -12,7 +12,9 @@ Universe (point-in-time): symbols with >= MIN_HISTORY completed daily bars,
   excluding stablecoin pairs, ranked by mean daily turnover over the last
   30 completed bars; top 50.
 
-CHAND4 40/15 (from jahrfm/20d, the walk-forward-validated config):
+CHAND4 40/15 (from jahrfm/20d; its 2026-09-28 audit found no out-of-sample
+evidence that this tuned exit beats the plain channel breakout — see
+backtest/README.md for the side-by-side on this repo's universe):
   signal   new 40-day high (long) / low (short) on the completed bar
            (high > max of the prior 40 highs), ranked by
            |close - SMA40(prior 40 closes)| / ATR14.
@@ -49,6 +51,7 @@ DEFAULTS = {
     "chand4_lookback": 40,
     "chand4_stop_window": 15,
     "chandelier_mult": 4.0,
+    "chand4_exit": "chandelier",   # "chandelier" | "channel" (N-day low/high trail, 20d spec)
     "chand4_top_n": 5,          # max concurrent positions PER SIDE
     "chand4_shorts": True,
     "chand4_candidates_kept": 15,  # ranked candidates per side written to the signal
@@ -218,6 +221,16 @@ def chand4_trail(series, entry_date, side, prev_stop, asof, p=DEFAULTS):
     e = series.idx.get(day_str(entry_date))
     if i is None or e is None or i < e:
         return prev_stop
+    if p.get("chand4_exit") == "channel":
+        # 20d spec: lowest low (highest high) of the last N completed bars
+        # since entry; a sliding-window min can only fall on a stop-out, so
+        # this never loosens.
+        lo = max(e, i + 1 - p["chand4_stop_window"])
+        if side == "LONG":
+            new = min(series.low[lo:i + 1])
+            return max(prev_stop, new) if prev_stop else new
+        new = max(series.high[lo:i + 1])
+        return min(prev_stop, new) if prev_stop else new
     atr = series.atr[i]
     if not atr or atr <= 0:
         return prev_stop

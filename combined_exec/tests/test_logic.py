@@ -88,6 +88,17 @@ class TestChand4(unittest.TestCase):
         self.assertAlmostEqual(new, s.high[60] - 4 * s.atr[60])
         self.assertEqual(st.chand4_trail(s, day(60), "LONG", 10_000.0, day(60)), 10_000.0)
 
+    def test_channel_trail_is_n_day_low_since_entry(self):
+        p = dict(st.DEFAULTS, chand4_exit="channel", chand4_stop_window=10)
+        s = mk_series("XUSDT", [100.0 + i for i in range(70)])
+        # entry at day 60, asof day 65: window = bars 60..65 (entry-bounded)
+        self.assertAlmostEqual(st.chand4_trail(s, day(60), "LONG", 1.0, day(65), p),
+                               min(s.low[60:66]))
+        # asof day 69: last 10 bars 60..69
+        self.assertAlmostEqual(st.chand4_trail(s, day(60), "LONG", 1.0, day(69), p),
+                               min(s.low[60:70]))
+        self.assertEqual(st.chand4_trail(s, day(60), "LONG", 1e6, day(69), p), 1e6)
+
     def test_trail_short_mirror(self):
         new = st.chand4_trail(self.s, day(50), "SHORT", 1e9, day(55))
         self.assertAlmostEqual(new, min(self.s.low[50:56]) + 4 * self.s.atr[55])

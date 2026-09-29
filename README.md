@@ -65,7 +65,7 @@ combined_exec/
   run.py                      VPS executor (paper or live)
   report.py                   open positions + per-leg P&L
   config.py                   COMBINED_* env (fail-closed)
-  tests/test_logic.py         28 unit/integration tests (no network)
+  tests/test_logic.py         29 unit/integration tests (no network)
 backtest/
   combined_backtest.py        joint shared-capital backtest
   README.md                   method + results
