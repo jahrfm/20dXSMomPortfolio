@@ -63,6 +63,26 @@ class TestUniverse(unittest.TestCase):
         self.assertEqual(st.universe(m, day(19), p), ["BUSDT", "AUSDT"])
 
 
+class TestCryptoOnly(unittest.TestCase):
+    def test_tradfi_and_gold_excluded(self):
+        self.assertTrue(st.is_crypto_instrument("", "BTC"))
+        self.assertTrue(st.is_crypto_instrument("innovation", "PIPPIN"))
+        for typ, base in (("stock", "AAPL"), ("ETF", "SOXL"), ("commodity", "XAU"),
+                          ("forex", "EUR"), ("", "XAUT"), ("", "PAXG"), ("", "USDC")):
+            self.assertFalse(st.is_crypto_instrument(typ, base), (typ, base))
+
+    def test_market_filter(self):
+        from combined_exec.market import Market
+        m = Market()
+        m._instruments = {
+            "BTCUSDT": {"status": "Trading", "contractType": "LinearPerpetual", "symbolType": "", "baseCoin": "BTC"},
+            "AAPLUSDT": {"status": "Trading", "contractType": "LinearPerpetual", "symbolType": "stock", "baseCoin": "AAPL"},
+            "XAUTUSDT": {"status": "Trading", "contractType": "LinearPerpetual", "symbolType": "", "baseCoin": "XAUT"},
+            "OLDUSDT": {"status": "Closed", "contractType": "LinearPerpetual", "symbolType": "", "baseCoin": "OLD"},
+        }
+        self.assertEqual(m.tradable_usdt_perps(), ["BTCUSDT"])
+
+
 class TestChand4(unittest.TestCase):
     def setUp(self):
         closes = [100.0] * 60 + [110.0]
@@ -87,6 +107,17 @@ class TestChand4(unittest.TestCase):
         new = st.chand4_trail(s, day(60), "LONG", 1.0, day(60))
         self.assertAlmostEqual(new, s.high[60] - 4 * s.atr[60])
         self.assertEqual(st.chand4_trail(s, day(60), "LONG", 10_000.0, day(60)), 10_000.0)
+
+    def test_channel_trail_is_n_day_low_since_entry(self):
+        p = dict(st.DEFAULTS, chand4_exit="channel", chand4_stop_window=10)
+        s = mk_series("XUSDT", [100.0 + i for i in range(70)])
+        # entry at day 60, asof day 65: window = bars 60..65 (entry-bounded)
+        self.assertAlmostEqual(st.chand4_trail(s, day(60), "LONG", 1.0, day(65), p),
+                               min(s.low[60:66]))
+        # asof day 69: last 10 bars 60..69
+        self.assertAlmostEqual(st.chand4_trail(s, day(60), "LONG", 1.0, day(69), p),
+                               min(s.low[60:70]))
+        self.assertEqual(st.chand4_trail(s, day(60), "LONG", 1e6, day(69), p), 1e6)
 
     def test_trail_short_mirror(self):
         new = st.chand4_trail(self.s, day(50), "SHORT", 1e9, day(55))

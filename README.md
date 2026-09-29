@@ -41,7 +41,7 @@ adding XSMOM makes the combined book worse. See [`backtest/README.md`](backtest/
 
 - **CHAND4 40/15.** Signal: a new 40-day high or low on the completed daily bar, ranked by `|close − SMA40| / ATR14`. Entry: next day at market. Initial stop: the 15-day low (15-day high for shorts). Exit: a daily chandelier trail at highest-high-since-entry − 4×ATR, which only ever tightens. Book: up to 5 positions per side.
 - **XSMOM (optional).** Every 14 days on Mondays (anchored 2026-08-17). Rank the universe by 30-day volatility-normalised return; take the top 5 longs that are above their MA100 with a positive 30-day return. Hard stop at −15%. Names that drop out of the top 5 are closed at the rebalance.
-- **Universe.** Top 50 USDT perps by trailing 30-day turnover, point-in-time, stablecoins excluded.
+- **Universe.** Top 50 crypto USDT perps by trailing 30-day turnover, point-in-time. Stock, ETF, commodity and forex perps, stablecoins and tokenised gold are excluded.
 - **Sizing.** Risk 0.5% of equity per trade to the stop. Max 35% of equity in any one position's notional. Leverage is derived from the stop distance (max 5x). Total margin is capped at 90% of equity, and a symbol can be held by only one leg.
 
 **Idempotent by construction:**
@@ -65,7 +65,7 @@ combined_exec/
   run.py                      VPS executor (paper or live)
   report.py                   open positions + per-leg P&L
   config.py                   COMBINED_* env (fail-closed)
-  tests/test_logic.py         28 unit/integration tests (no network)
+  tests/test_logic.py         31 unit/integration tests (no network)
 backtest/
   combined_backtest.py        joint shared-capital backtest
   README.md                   method + results

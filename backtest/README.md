@@ -18,8 +18,8 @@ checked in).
 
 | | |
 |---|---|
-| Data | Every Bybit USDT perp ever listed (806 with ≥30 bars, **delisted included**), daily klines + actual funding history, 2020-03 → 2026-09-27 |
-| Universe | Point-in-time: top-50 by trailing 30-day turnover, ≥110 bars of history, stablecoins excluded |
+| Data | Every Bybit crypto USDT perp ever listed (805 with ≥30 bars, **delisted included**), daily klines + actual funding history, 2020-03 → 2026-09-27 |
+| Universe | Point-in-time: top-50 by trailing 30-day turnover, ≥110 bars of history; crypto only (stock/ETF/commodity/forex perps, stablecoins and tokenised gold excluded — same rule as MOMSXperp) |
 | Timing | Signal on the completed bar D-1; fills at D's open; stops checked on D's bar **including the entry day**; gap-through stops fill at the open |
 | Costs | 5.5 bps taker + 5 bps slippage per side; funding charged/received daily from real 8h/4h/1h rates (0.01%/8h assumed where history is missing) |
 | Sizing | 0.5% of equity risked per trade to the stop; max 35% notional per position; margin ≤ 90% of equity at stop-derived leverage (max 5x) |
@@ -48,13 +48,57 @@ CHAND4 by year (0.5% risk): 2022 −2.4% · 2023 +32.0% · 2024 −4.4% ·
 2025 +3.6% · 2026 YTD +15.6%. Trades: PF 1.54, win rate 38%, avg +0.18R,
 best +19.9R, avg hold 26 days; longs PF 1.50, shorts PF 1.65.
 
+## Breakout exit comparison (after the 20d audit)
+
+The 20d audit (`jahrfm/20d@23cfade`) fixed that engine's position cap,
+chandelier look-ahead and funding, and found the chandelier 40/15 no better
+than a plain channel breakout. Same comparison here — point-in-time universe
+incl. delisted, 0.5% risk, both sides unless noted:
+
+| Spec | CAGR | Sharpe | Sortino | Max DD | Trades | 2022 / 23 / 24 / 25 / 26 |
+|---|---:|---:|---:|---:|---:|---|
+| **Chandelier 40/15** (live default) | 8.9% | **1.05** | **1.60** | 13.1% | 465 | −2 / +32 / −4 / +4 / +16 |
+| Channel 40/15 | 9.3% | 0.73 | 1.31 | 11.9% | 1,151 | −4 / +32 / −2 / −1 / +23 |
+| Channel 20/10 (20d spec, untuned) | 7.0% | 0.67 | 1.03 | 12.0% | 1,528 | +2 / +25 / −5 / −2 / +15 |
+| Chandelier 40/15, long-only | 5.5% | 0.65 | 0.98 | 18.5% | 303 | −7 / +34 / −7 / −4 / +16 |
+| Channel 20/10, long-only | 3.5% | 0.37 | 0.56 | 15.1% | 875 | −15 / +25 / −1 / −2 / +14 |
+
+At 1% risk: chandelier 40/15 17.6% CAGR / 22.2% DD, channel 20/10
+13.7% / 22.6%. That sits between 20d's audited 43-coin (hindsight-selected)
+and 16-coin figures, as expected once hindsight is removed.
+
+**Equal-risk comparison and stability** (CHAND4 leg only; H1/H2 = first and
+second half of the period):
+
+| Spec | Risk | CAGR | Sharpe | Sortino | Max DD | Calmar | H1 Sharpe | H2 Sharpe |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| **Chandelier 40/15** | 1% | 17.6% | **1.09** | **1.69** | 22.2% | 0.79 | 0.86 | **1.42** |
+| Channel 40/15 | 1% | 17.6% | 0.77 | 1.39 | 20.7% | 0.85 | 0.84 | 0.76 |
+| Channel 20/10 | 1% | 13.7% | 0.71 | 1.10 | 22.6% | 0.61 | 0.73 | 0.68 |
+
+**Selected for live: chandelier 40/15** (`chand4_exit="chandelier"`, the
+default). Same return as channel 40/15 at equal risk with a clearly higher
+Sharpe and Sortino, and it is never worse in either half. Channel 40/15 has a
+slightly shallower drawdown. Shorts stay on (long-only lowers Sharpe in every
+spec) and XSMOM stays off.
+
+Reading: all three specs are profitable with similar CAGR, and all make
+their money in 2023 and 2026 (2024–25 flat). The chandelier has the best
+risk-adjusted numbers here, but the gap is small and every spec was chosen
+in-sample, so this is **not** evidence the tuned exit is better — consistent
+with the 20d audit. Shorts matter in this universe (long-only lowers
+Sharpe in every spec, mostly via 2022), whereas the 20d audit found shorts
+roughly breakeven on its universe.
+
 ## Conclusions
 
-1. **CHAND4 has an edge that survives realistic execution.** Sharpe ~1.0, DD
-   13% at 0.5% risk. Returns are lumpy (2023 and 2026 carry most of it) and
-   ~2 points of CAGR come from funding. The parameters (40/15, 4×ATR) were
-   picked on 2021–2026 data, so this is still an in-sample estimate —
-   expect less forward.
+1. **Crypto breakout trend-following has an edge that survives realistic
+   execution**, in every exit spec tested (table above). Chandelier 40/15:
+   Sharpe ~1.0, DD 13% at 0.5% risk. Returns are regime-dependent (2023 and
+   2026 carry most of it) and ~2 points of CAGR come from funding. The
+   parameters were picked on 2021–2026 data and the 20d walk-forward finds
+   no OOS benefit from tuning, so treat all of these as in-sample estimates
+   and expect less forward.
 2. **XSMOM has no edge once the universe is point-in-time and costs/funding
    are included.** Without funding it loses 14.5%/yr; its small positive
    result depends on collecting extreme negative funding on freshly listed
